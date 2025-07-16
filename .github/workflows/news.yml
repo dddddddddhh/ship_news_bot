@@ -2,7 +2,7 @@ name: Ship News Bot
 
 on:
   schedule:
-    - cron: '0 23 * * *'  # 매일 오전 8시 KST (한국시간 = UTC+9)
+    - cron: '0 23 * * *'  # 한국시간 오전 8시에 실행
   workflow_dispatch:
 
 jobs:
@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -22,9 +23,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run main.py
+        run: |
+          python main.py
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          python main.py
